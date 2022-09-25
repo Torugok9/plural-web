@@ -7,7 +7,7 @@
     <!-- <AppBar v-if="!hideMenu" /> -->
     <v-main>
       <!-- Provides the application the proper gutter -->
-      <v-container fluid>
+      <v-container fill-height>
         <!-- If using vue-router -->
         <router-view></router-view>
       </v-container>

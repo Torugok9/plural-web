@@ -1,15 +1,23 @@
 <template>
   <v-row class="flex-wrap justify-center fixed">
+    <div>
+      <v-col cols="12" class="d-flex justify-center">
+        <b>
+          ACESSO AO CLIENTE
+        </b>
+      </v-col>
+      <v-col cols="12">
+        <v-text-field color="primary" outlined label="Login" v-model="email"></v-text-field>
+      </v-col>
+
+      <v-col cols="12">
+        <v-text-field outlined label="Senha" v-model="password"></v-text-field>
+      </v-col>
+      <v-col cols="12"
+        ><v-btn color="#7ED957" width="400px" height="50px" rounded depressed @click="authenticate"> <b class="access">Acessar</b> </v-btn></v-col
+      >
+    </div>
     <!-- Example of authentication -->
-    <v-col cols="12">
-      <v-text-field label="Email" v-model="email"></v-text-field>
-    </v-col>
-    <v-col cols="12">
-      <v-text-field label="Password" v-model="password"></v-text-field>
-    </v-col>
-    <v-col cols="12"
-      ><v-btn depressed @click="authenticate"> Entrar </v-btn></v-col
-    >
   </v-row>
 </template>
 
@@ -36,4 +44,8 @@ export default {
 };
 </script>
 
-<style></style>
+<style>
+  .access{
+    /* color:white;  */
+  }
+</style>
