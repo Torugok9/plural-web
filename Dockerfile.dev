@@ -2,7 +2,12 @@ FROM node:lts-alpine
 
 WORKDIR /myapp
 COPY package*.json ./
-RUN npm install
+
+RUN npm install -g @vue/cli
+
+# install 'nodemon' package.
+RUN npm install nodemon
+
 COPY ./ ./
 
 EXPOSE 80

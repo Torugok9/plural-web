@@ -10,15 +10,24 @@ const state = () => ({
 
 // getters
 const getters = {
-  jwtPayload (state) {
-    if (!(state.currentUser && state.currentUser.token)) return {}
+  jwtPayload(state) {
+    if (!(state.currentUser && state.currentUser.token)) return {};
 
-    return jwtDecode(state.currentUser.token)
+    return jwtDecode(state.currentUser.token);
   },
-  isJwtExpired (_state, getters) {
-    return (Date.now() >= (getters.jwtPayload.exp || 0) * 1000)
-  }
-}
+  isJwtExpired(_state, getters) {
+    return Date.now() >= (getters.jwtPayload.exp || 0) * 1000;
+  },
+  hasPermission:
+    (state) =>
+    (...roles) => {
+      if (!(state.currentUser && state.currentUser.role)) return false;
+      if (!roles.length) return true;
+      const userRole = state.currentUser.role.default_to;
+
+      return roles.some((role) => role === userRole);
+    },
+};
 
 // actions
 const actions = {

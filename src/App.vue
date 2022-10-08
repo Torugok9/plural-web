@@ -1,14 +1,10 @@
 <template>
   <v-app class="ma-0 pa-0">
-    <!-- Add MenuBar -->
-    <!-- <Menu v-if="!hideMenu" /> -->
+    <Menu v-if="!hideMenu" />
+    <AppBar v-if="!hideMenu" />
 
-    <!-- Add TopAppBar -->
-    <!-- <AppBar v-if="!hideMenu" /> -->
     <v-main>
-      <!-- Provides the application the proper gutter -->
-      <v-container fill-height>
-        <!-- If using vue-router -->
+      <v-container class="background full-height" fluid >
         <router-view></router-view>
       </v-container>
     </v-main>
@@ -16,23 +12,27 @@
 </template>
 
 <script>
-// import Menu from "./components/Menu/Menu.vue";
-// import AppBar from "./components/AppBar/AppBar.vue";
+import Menu from "./components/Menu/Menu.vue";
+import AppBar from "./components/AppBar/AppBar.vue";
 
 export default {
-  name: "Frontend",
+  name: "Plural",
 
   components: {
-    // Menu,
-    // AppBar,
+    Menu,
+    AppBar,
   },
 
-  data: () => ({
-  }),
+  data: () => ({}),
   computed: {
     hideMenu() {
-      return this.$route.meta.hideMenu || false
+      return this.$route.meta.hideMenu || false;
     },
-  }
+  },
 };
 </script>
+<style>
+.background {
+  background-color: rgb(231, 231, 231);
+}
+</style>
