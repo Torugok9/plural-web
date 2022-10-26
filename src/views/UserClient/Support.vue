@@ -83,8 +83,8 @@
                         height="100%"
                       >
                         <div>
-                          <v-icon size="80" color="primary">mdi-headset</v-icon>
-                          <h1 class="mt-10">0800 770 2821</h1>
+                          <v-icon size="80" color="primary">mdi-forum</v-icon>
+                          <!-- <h1 class="mt-10">0800 770 2821</h1> -->
                         </div>
                       </v-card>
                     </v-col>

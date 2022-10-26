@@ -11,44 +11,62 @@
             </div> -->
           </v-row>
           <div class="mt-16">
-            <v-col cols="12" class="access d-flex justify-center">
-              <b> ACESSO AO CLIENTE </b>
+            <v-col cols="12" class="d-flex justify-center">
+              <b> TIPO DE USUÁRIO </b>
+            </v-col>
+            <!-- <v-col cols="12"> 
+              <div class="mt-6">
+                <v-btn width="295" color="primary" class="pa-6 white--text">
+                  Area de Cliente
+                </v-btn>
+              </div>
             </v-col>
             <v-col cols="12">
-              <v-text-field
-                v-model="email"
-                label="Login"
-                outlined
-              ></v-text-field>
-              <v-text-field
-                v-model="password"
-                type="password"
-                label="Senha"
-                outlined
-              ></v-text-field>
-            </v-col>
-
-            <v-col cols="12"
-              ><v-btn
-                color="#7ED957"
-                width="400px"
-                height="50px"
-                rounded
-                depressed
-                @click="authenticate"
-              >
-                <b class="access">Acessar</b>
-              </v-btn></v-col
-            >
+              <div class="mt-6">
+                <v-btn
+                  width="295"
+                  color="primary"
+                  class="pa-6 white--text"
+                  @click="
+                    $router.push({
+                      name: 'MasterLogin',
+                    })
+                  "
+                >
+                  Area Master
+                </v-btn>
+              </div>
+            </v-col> -->
+            <div class="" v-for="(item, index) in items" :key="index">
+              <!-- v-if="hasPermission(...item.permissions)" -->
+              <v-col cols="12">
+                <div class="mt-6">
+                  <v-btn
+                    width="295"
+                    :color="item.color"
+                    class="pa-6 white--text"
+                    :to="
+                      item.path
+                        ? {
+                            path: item.path,
+                          }
+                        : ''
+                    "
+                  >
+                    {{ item.name }}
+                  </v-btn>
+                </div>
+              </v-col>
+            </div>
           </div>
           <div class="column d-flex justify-center mt-5">
-            <v-btn height="50" width="50" icon>
+            <v-btn height="50" disabled width="50" icon>
               <v-icon size="40">mdi-facebook</v-icon>
             </v-btn>
-            <v-btn height="50" width="50" icon>
+            <v-btn height="50" disabled width="50" icon>
               <v-icon size="40">mdi-linkedin</v-icon>
             </v-btn>
-            <v-btn height="50" width="50" icon>
+            <v-btn height="50" disabled width="50" icon>
               <v-icon size="40">mdi-instagram</v-icon>
             </v-btn>
           </div>
@@ -66,66 +84,38 @@
 </template>
 
 <script>
-import { mapActions } from "vuex";
+import { mapActions, mapGetters } from "vuex";
 
 export default {
   data: () => ({
-    email: "",
-    password: "",
-    proccesses:[]
+    items: [
+      {
+        name: "Cliente",
+        path: "/client/login",
+        color: "primary",
+      },
+      {
+        name: "Administração",
+        path: "/master/login",
+        color: "primary",
+      },
+    ],
   }),
   mounted() {
-    this.getProccess();
+    // this.getProccess();
   },
   methods: {
-    ...mapActions("authentication", ["validateSession", "login"]),
-    async authenticate() {
-      // Example of authentication
-      try {
-        await this.login({ email: this.email, password: this.password });
-        this.$router.push({ name: "Proccess" });
-      } catch (error) {
-        console.log(error);
-      }
-    },
-    async getProccess() {
-      try {
-        const response = await this.$axios.get(
-          "proccesses/",
-          this.currentUser.id
-        );
-        this.proccesses = response.data;
-        if (response.data.phase) {
-          this.phases = response.data.phase.map((el) => {
-            return {
-              id: el.id,
-              description: el.description,
-              proccess_id: el.proccess_id,
-              created_at: this.formatDateTime(el.created_at),
-              updated_at: this.formatDateTime(el.updated_at),
-            };
-          });
-        }
-      } catch (error) {
-        console.log(error);
-      }
-    },
-    formatDateTime(dataTime) {
-      const day = dataTime.slice(8, 10);
-      const month = dataTime.slice(5, 7);
-      const year = dataTime.slice(0, 4);
-      const time = dataTime.slice(11, 19);
-
-      return `${day}/${month}/${year} às ${time}`;
-    },
+    ...mapActions("authentication", ["validateSession", "logout"]),
+  },
+  computed: {
+    ...mapGetters({
+      hasPermission: "authentication/hasPermission",
+    }),
   },
 };
 </script>
 
 <style>
-.access {
-  color: white;
-}
 .bg {
   background-color: white;
 }

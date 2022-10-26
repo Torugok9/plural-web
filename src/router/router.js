@@ -17,44 +17,111 @@ const router = new VueRouter({
       component: () => import("../views/Authentication/Login.vue"),
     },
     {
-      path: "/envio",
+      path: "/client/login",
+      name: "ClientLogin",
+      meta: {
+        hideMenu: true,
+        skipAuthentication: true,
+      },
+      component: () => import("../views/Authentication/LoginClient.vue"),
+    },
+    {
+      path: "/master/login",
+      name: "MasterLogin",
+      meta: {
+        hideMenu: true,
+        skipAuthentication: true,
+      },
+      component: () => import("../views/Authentication/LoginMaster.vue"),
+    },
+    {
+      path: "/client/envio",
       name: "Dispatch",
-      meta: {},
+      meta: {
+        permissions: ["client"],
+      },
+
       component: () => import("../views/UserClient/Dispatch.vue"),
     },
     {
-      path: "/pasta_digital",
+      path: "/client/pasta_digital",
       name: "Digital Folder",
-      meta: {},
+      meta: {
+        permissions: ["client"],
+      },
+
       component: () => import("../views/UserClient/DigitalFolder.vue"),
     },
     {
-      path: "/processos/",
+      path: "/client/processos/",
       name: "Proccess",
-      meta: {},
+      meta: {
+        permissions: ["client"],
+      },
+
       component: () => import("../views/UserClient/Proccess.vue"),
     },
     {
-      path: "/financeiro",
+      path: "/client/financeiro",
       name: "Financial",
-      meta: {},
+      meta: {
+        permissions: ["client"],
+      },
+
       component: () => import("../views/UserClient/Financial.vue"),
     },
     {
-      path: "/suporte",
+      path: "/client/suporte",
       name: "Support",
-      meta: {},
+      meta: {
+        permissions: ["client"],
+      },
+
       component: () => import("../views/UserClient/Support.vue"),
+    },
+    {
+      path: "/master/painel",
+      name: "Panel",
+      meta: {
+        hideMenu: true,
+        menuMaster: true,
+        permissions: ["master"],
+      },
+
+      component: () => import("../views/Master/Panel.vue"),
     },
   ],
 });
 
-// Global before guard to redirect user to the login page when authentication is needed
 router.beforeResolve((to, _from, next) => {
   if (to.meta && to.meta.skipAuthentication) {
     next();
   } else if (store.getters["authentication/isJwtExpired"]) {
     next({ name: "Login" });
+  } else if (to.meta && to.meta.permissions) {
+    if (store.getters["authentication/hasPermission"](...to.meta.permissions)) {
+      next();
+    } else {
+      const roles = {
+        client: "clientes",
+        master: "administradores",
+      };
+      console.log(localStorage)
+      localStorage.setItem("currentUser", "{}");
+      Vue.swal({
+        color: "#ffffff",
+        background: "#34103B",
+        position: "top",
+        title: "Plural",
+        icon: "error",
+        toast: true,
+        timer: 4500,
+        timerProgressBar: true,
+        showConfirmButton: false,
+        text: `Apenas ${roles[to.meta.permissions] || ""} são permitidos`,
+      });
+      next({ name: "Login" });
+    }
   } else {
     next();
   }

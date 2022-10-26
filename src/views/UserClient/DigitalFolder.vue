@@ -14,7 +14,6 @@
               outlined
               width="75vw"
               min-height="7vh"
-              height="7vh"
               max-height="10vh"
               class="d-flex justify-center"
             >
@@ -43,7 +42,6 @@
               outlined
               width="75vw"
               min-height="7vh"
-              height="7vh"
               max-height="10vh"
               class="d-flex justify-center"
             >
@@ -71,14 +69,14 @@
               outlined
               width="75vw"
               min-height="7vh"
-              height="7vh"
               max-height="10vh"
               class="d-flex justify-center"
             >
               <v-row justify="center">
                 <v-col cols="10" sm="9" md="9" class="text">
                   <p class="cardDescription pa-4">
-                    PROCURAÇÃO ASSINADA PELO CLIENTE - {{ currentUser.name }}
+                    PROCURAÇÃO ASSINADA PELO CLIENTE  -
+                    {{ currentUser.name }}
                   </p>
                 </v-col>
                 <v-col cols="2" sm="3" md="3" class="text">

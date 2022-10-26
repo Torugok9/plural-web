@@ -3,15 +3,17 @@
     <v-col cols="4">
       <v-card outlined height="91vh" elevation="0" color="white" class="pa-2">
         <v-card-title>
-          Selecione o processo que deseja acompanhar
+          Processos disponíveis para acompanhamento
         </v-card-title>
         <v-divider class="mx-4"></v-divider>
         <v-list flat>
           <v-subheader>Processos disponíveis para acompanhamento</v-subheader>
           <v-list-item-group v-model="selectedItem" color="primary">
             <v-list-item v-for="(proccess, i) in proccesses.id" :key="i">
-              <v-list-item-content>
-                <v-list-item-title>Processo de n°{{proccess}}</v-list-item-title>
+              <v-list-item-content @click="windowSelector(proccess)">
+                <v-list-item-title
+                  >Processo de n°{{ proccess }}</v-list-item-title
+                >
               </v-list-item-content>
             </v-list-item>
           </v-list-item-group>
@@ -29,7 +31,11 @@
           <v-row align="center" justify="center">
             <v-col cols="8">
               <v-timeline align-top reverse>
-                <v-timeline-item v-for="(phase, i) in phases" :key="i" dot>
+                <v-timeline-item
+                  v-for="(phase, i) in proccesses.phase"
+                  :key="i"
+                  dot
+                >
                   <v-card outlined elevation="2" width="500" height="100">
                     <v-card-text class="pa-2 font-weight-normal">
                       <strong>Equipe Plural</strong> {{ phase.created_at }}
@@ -53,13 +59,8 @@ export default {
   components: {},
   data: () => ({
     proccesses: [],
-    phases: [],
+    window: null,
     selectedItem: 1,
-      items: [
-        { text: 'Real-Time'},
-        { text: 'Audience' },
-        { text: 'Conversions' },
-      ],
   }),
   mounted() {
     this.getProccess();
@@ -68,24 +69,29 @@ export default {
     async getProccess() {
       try {
         const response = await this.$axios.get(
-          "proccesses/",
-          this.currentUser.id
+          "proccesses/", {params: {user_id: this.currentUser.id}}
         );
         this.proccesses = response.data;
-        if (response.data.phase) {
-          this.phases = response.data.phase.map((el) => {
-            return {
-              id: el.id,
-              description: el.description,
-              proccess_id: el.proccess_id,
-              created_at: this.formatDateTime(el.created_at),
-              updated_at: this.formatDateTime(el.updated_at),
-            };
-          });
-        }
+        // if (response.data.phase) {
+        //   this.proccesses.phases = response.data.phase.map((el) => {
+        //     return {
+        //       id: el.id,
+        //       description: el.description,
+        //       proccess_id: el.proccess_id,
+        //       created_at: this.formatDateTime(el.created_at),
+        //       updated_at: this.formatDateTime(el.updated_at),
+        //     };
+        //   });
+        // }
+        console.log(response.data);
       } catch (error) {
         console.log(error);
       }
+    },
+    windowSelector(id) {
+      console.log(id);
+      this.window = id;
+      console.log(this.window);
     },
     formatDateTime(dataTime) {
       const day = dataTime.slice(8, 10);

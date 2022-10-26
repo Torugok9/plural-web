@@ -2,6 +2,7 @@
   <v-app class="ma-0 pa-0">
     <Menu v-if="!hideMenu" />
     <AppBar v-if="!hideMenu" />
+    <MenuMaster v-if="menuMaster" />
 
     <v-main>
       <v-container class="background full-height" fluid >
@@ -13,6 +14,7 @@
 
 <script>
 import Menu from "./components/Menu/Menu.vue";
+import MenuMaster from "./components/Menu/MenuMaster.vue";
 import AppBar from "./components/AppBar/AppBar.vue";
 
 export default {
@@ -21,6 +23,7 @@ export default {
   components: {
     Menu,
     AppBar,
+    MenuMaster,
   },
 
   data: () => ({}),
