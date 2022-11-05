@@ -90,6 +90,28 @@ const router = new VueRouter({
 
       component: () => import("../views/Master/Panel.vue"),
     },
+    {
+      path: "/master/cadastro",
+      name: "Register",
+      meta: {
+        hideMenu: true,
+        menuMaster: true,
+        permissions: ["master"],
+      },
+
+      component: () => import("../views/Master/Register.vue"),
+    },
+    {
+      path: "/master/perfil-cliente/:id",
+      name: "ClientPerfil",
+      meta: {
+        hideMenu: true, 
+        menuMaster: true,
+        permissions: ["master"],
+      },
+
+      component: () => import("../views/Perfil/Client.vue"),
+    },
   ],
 });
 
@@ -111,7 +133,7 @@ router.beforeResolve((to, _from, next) => {
       Vue.swal({
         color: "#ffffff",
         background: "#34103B",
-        position: "top",
+        position: "bottom",
         title: "Plural",
         icon: "error",
         toast: true,
