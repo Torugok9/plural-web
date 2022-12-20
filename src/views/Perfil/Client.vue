@@ -335,7 +335,7 @@ export default {
   },
   mounted() {
     this.seePerfil();
-    this.fetchHistory();
+    // this.fetchHistory();
   },
   methods: {
     async seePerfil(id) {

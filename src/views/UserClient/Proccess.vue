@@ -9,10 +9,10 @@
         <v-list flat>
           <v-subheader>Processos disponíveis para acompanhamento</v-subheader>
           <v-list-item-group v-model="selectedItem" color="primary">
-            <v-list-item v-for="(proccess, i) in proccesses.length" :key="i">
-              <v-list-item-content @click="windowSelector(proccess)">
+            <v-list-item v-for="(proccess, i) in proccesses.data" :key="i">
+              <v-list-item-content @click="windowSelector(proccess.id)">
                 <v-list-item-title
-                  >Processo de n°{{ proccess }}</v-list-item-title
+                  >Processo de n°{{ proccess.id }}</v-list-item-title
                 >
               </v-list-item-content>
             </v-list-item>
@@ -68,13 +68,12 @@ export default {
   },
   methods: {
     async getProccess() {
-      console.log(this.currentUser.id)
       try {
         const response = await this.$axios.get(
-          "proccesses/", this.currentUser.id
+          "proccesses/", {params: {user_id: this.currentUser.id}}
         );
         this.proccesses =  response.data;
-         console.log('INDEX ::::::', this.proccesses);
+
       } catch (error) {
         console.log(error);
       }
@@ -92,6 +91,7 @@ export default {
     },
     windowSelector(id) {
       this.window = id;
+      console.log(this.window)
       this.showProccess()
     },
     formatDateTime(dataTime) {
