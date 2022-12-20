@@ -102,6 +102,28 @@ const router = new VueRouter({
       component: () => import("../views/Master/Register.vue"),
     },
     {
+      path: "/master/financeiro",
+      name: "MasterFinancial",
+      meta: {
+        hideMenu: true,
+        menuMaster: true,
+        permissions: ["master"],
+      },
+
+      component: () => import("../views/Master/Invoincing.vue"),
+    },
+    {
+      path: "/master/agendamento",
+      name: "Schedule",
+      meta: {
+        hideMenu: true,
+        menuMaster: true,
+        permissions: ["master"],
+      },
+
+      component: () => import("../views/Master/Schedule.vue"),
+    },
+    {
       path: "/master/perfil-cliente/:id",
       name: "ClientPerfil",
       meta: {

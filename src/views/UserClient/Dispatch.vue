@@ -9,23 +9,201 @@
         </v-card-subtitle>
         <v-divider class="mx-4"></v-divider>
         <v-row class="fill-height" justify="center">
-          <v-col cols="3">
+          <v-col cols="12" md="3" sm="12" lg="3">
             <v-card class="mt-10" height="400" width="400" outlined>
               <v-row justify="center" class="fill-height">
                 <v-icon icon size="200"> mdi-plus </v-icon>
               </v-row>
             </v-card>
+            <!-- dialog com botão -->
+            <v-dialog v-model="dialog" persistent min-width="600px">
+              <template v-slot:activator="{ on, attrs }">
+                <v-btn
+                  class="mx-6 mt-4"
+                  color="#7ED957"
+                  width="350px"
+                  height="50px"
+                  depressed
+                  v-bind="attrs"
+                  v-on="on"
+                >
+                  <b class="access">Enviar</b>
+                </v-btn>
+              </template>
+              <v-card class="mx-auto" min-width="500">
+                <v-card-title
+                  class="text-h6 font-weight-regular justify-space-between"
+                >
+                  <span>{{ currentTitle }}</span>
+                  <!-- <v-avatar
+                    color="primary lighten-2"
+                    class="subheading white--text"
+                    size="24"
+                    v-text="step"
+                  ></v-avatar> -->
+                </v-card-title>
 
-            <v-btn
-              class="mx-6 mt-4"
-              color="#7ED957"
-              width="350px"
-              height="50px"
-              depressed
-              @click="authenticate"
-            >
-              <b class="access">Enviar</b>
-            </v-btn>
+                <v-window v-model="step">
+                  <v-window-item :value="1">
+                    <v-col cols="12" sm="12" md="12">
+                      <v-file-input
+                        v-model="document.arquive"
+                        color="deep-purple accent-4"
+                        counter
+                        label="RG"
+                        multiple
+                        placeholder="Selecione seu arquivo"
+                        prepend-icon="mdi-paperclip"
+                        outlined
+                        :show-size="1000"
+                      >
+                        <template v-slot:append>
+                          <v-layout class="alignThis">
+                            <v-btn icon color="primary" @click="postDocument()">
+                              <v-icon>mdi-send</v-icon>
+                            </v-btn>
+                          </v-layout>
+                        </template>
+                        <template v-slot:selection="{ index, text }">
+                          <v-chip
+                            v-if="index < 2"
+                            color="deep-purple accent-4"
+                            dark
+                            label
+                            small
+                          >
+                            {{ text }}
+                          </v-chip>
+
+                          <span
+                            v-else-if="index === 2"
+                            class="text-overline grey--text text--darken-3 mx-2"
+                          >
+                            +{{ files.length - 2 }} arquivo(s).
+                          </span>
+                        </template>
+                      </v-file-input>
+                    </v-col>
+                  </v-window-item>
+
+                  <v-window-item :value="2">
+                    <v-col cols="12" sm="12" md="12">
+                      <v-file-input
+                        v-model="document.arquive"
+                        color="deep-purple accent-4"
+                        counter
+                        label="CPF"
+                        multiple
+                        placeholder="Selecione seu arquivo"
+                        prepend-icon="mdi-paperclip"
+                        outlined
+                        :show-size="1000"
+                      >
+                        <template v-slot:append>
+                          <v-layout class="alignThis">
+                            <v-btn icon color="primary" @click="postDocument()">
+                              <v-icon>mdi-send</v-icon>
+                            </v-btn>
+                          </v-layout>
+                        </template>
+                        <template v-slot:selection="{ index, text }">
+                          <v-chip
+                            v-if="index < 2"
+                            color="deep-purple accent-4"
+                            dark
+                            label
+                            small
+                          >
+                            {{ text }}
+                          </v-chip>
+
+                          <span
+                            v-else-if="index === 2"
+                            class="text-overline grey--text text--darken-3 mx-2"
+                          >
+                            +{{ files.length - 2 }} arquivo(s).
+                          </span>
+                        </template>
+                      </v-file-input>
+                    </v-col>
+                  </v-window-item>
+
+                  <v-window-item :value="3">
+                    <v-col cols="12" sm="12" md="12">
+                      <v-file-input
+                        v-model="document.arquive"
+                        color="deep-purple accent-4"
+                        counter
+                        label="Comprovante de endereço"
+                        multiple
+                        placeholder="Selecione seu arquivo"
+                        prepend-icon="mdi-paperclip"
+                        outlined
+                        :show-size="1000"
+                      >
+                        <template v-slot:append>
+                          <v-layout class="alignThis">
+                            <v-btn icon color="primary" @click="postDocument()">
+                              <v-icon>mdi-send</v-icon>
+                            </v-btn>
+                          </v-layout>
+                        </template>
+                        <template v-slot:selection="{ index, text }">
+                          <v-chip
+                            v-if="index < 2"
+                            color="deep-purple accent-4"
+                            dark
+                            label
+                            small
+                          >
+                            {{ text }}
+                          </v-chip>
+
+                          <span
+                            v-else-if="index === 2"
+                            class="text-overline grey--text text--darken-3 mx-2"
+                          >
+                            +{{ files.length - 2 }} arquivo(s).
+                          </span>
+                        </template>
+                      </v-file-input>
+                    </v-col>
+                  </v-window-item>
+                </v-window>
+
+                <v-divider></v-divider>
+
+                <v-card-actions>
+                  <v-btn v-if="step != 1" text @click="step--"> Voltar </v-btn>
+                  <v-btn v-if="step === 1" text @click="dialog = false">
+                    cancelar
+                  </v-btn>
+                  <v-spacer></v-spacer>
+                  <v-btn
+                    v-if="step < 3"
+                    color="primary"
+                    depressed
+                    @click="step++"
+                  >
+                    Próximo
+                  </v-btn>
+                  <v-btn
+                    v-if="step === 3"
+                    color="primary"
+                    depressed
+                    @click="dialog = false"
+                  >
+                    Finalizar !
+                  </v-btn>
+                </v-card-actions>
+                <div class="d-flex justify-center">
+                  <small
+                    >*não se esqueça de clicar no ícone para enviar seu
+                    documento !</small
+                  >
+                </div>
+              </v-card>
+            </v-dialog>
           </v-col>
         </v-row>
       </v-card>
@@ -39,53 +217,58 @@ import { mapState } from "vuex";
 export default {
   components: {},
   data: () => ({
-    proccesses: [],
-    phases: [],
-    selectedItem: 1,
-    items: [
-      { text: "Real-Time" },
-      { text: "Audience" },
-      { text: "Conversions" },
-    ],
-  }),
-  mounted() {
-    this.getProccess();
-  },
-  methods: {
-    async getProccess() {
-      try {
-        const response = await this.$axios.get(
-          "proccesses/",
-          this.currentUser.id
-        );
-        this.proccesses = response.data;
-        if (response.data.phase) {
-          this.phases = response.data.phase.map((el) => {
-            return {
-              id: el.id,
-              description: el.description,
-              proccess_id: el.proccess_id,
-              created_at: this.formatDateTime(el.created_at),
-              updated_at: this.formatDateTime(el.updated_at),
-            };
-          });
-        }
-      } catch (error) {
-        console.log(error);
-      }
+    step: 1,
+    dialog: false,
+    document: {
+      name: "",
+      arquive: "",
+      user_id: "",
     },
-    formatDateTime(dataTime) {
-      const day = dataTime.slice(8, 10);
-      const month = dataTime.slice(5, 7);
-      const year = dataTime.slice(0, 4);
-      const time = dataTime.slice(11, 19);
-
-      return `${day}/${month}/${year} às ${time}`;
+  }),
+  mounted() {},
+  methods: {
+    postDocument() {
+      try {
+        // console.log(this.currentUser.id)
+        this.document.user_id = this.currentUser.id;
+        this.$axios.post("documents/", this.document);
+      } catch (error) {
+        this.$swal({
+          color: "#ffffff",
+          background: "#34103B",
+          toast: true,
+          position: "top",
+          showConfirmButton: false,
+          timer: 4000,
+          icon: "error",
+          title: "Plural",
+          text: "Não foi possivel enviar seus documentos, por favor entre em contato para que podemos resolver este problema !",
+        });
+      }
     },
   },
   computed: {
     ...mapState({
       currentUser: (state) => state.authentication.currentUser,
+      currentTitle() {
+        switch (this.step) {
+          case 1:
+            this.document.name = "RG";
+            this.document.arquive = "";
+            this.document.type = 0;
+            return "Enviar RG";
+          case 2:
+            this.document.name = "CPF";
+            this.document.arquive = "";
+            this.document.type = 1;
+            return "CPF";
+          case 3:
+            this.document.name = "Comprovante de Endereço";
+            this.document.arquive = "";
+            this.document.type = 3;
+            return "Comprovante de endereço";
+        }
+      },
     }),
   },
 };
@@ -94,5 +277,8 @@ export default {
 <style>
 .access {
   color: white;
+}
+.alignThis {
+  margin-top: -6px !important;
 }
 </style>

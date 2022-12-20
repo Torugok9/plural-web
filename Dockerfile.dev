@@ -1,15 +1,9 @@
-FROM node:lts-alpine
+FROM node:16
 
-WORKDIR /myapp
+WORKDIR /app
 COPY package*.json ./
-
-RUN npm install -g @vue/cli
-
-# install 'nodemon' package.
-RUN npm install nodemon
-
+RUN npm install @vue/cli-service --save-dev
+RUN npm install 
 COPY ./ ./
 
-EXPOSE 80
-
-CMD ["npm", "run", "dev"]
+CMD ["npm", "run", "serve"]

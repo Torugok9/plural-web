@@ -19,10 +19,6 @@
               </v-btn>
             </div>
             <v-img aspect-ratio="2" src="../../assets/plural.png" />
-            <!-- <div class="text-h3 mt-1 font-weight-black logo-text">PLURAL</div>
-            <div class="test subtitle-2 font-weight-thin text-start logo-text">
-              REGISTRO <br />ESPECIALIZADO<br />DE PATENTES
-            </div> -->
           </v-row>
           <div class="mt-16">
             <v-col cols="12" class="d-flex justify-center">

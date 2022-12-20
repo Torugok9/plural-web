@@ -9,7 +9,7 @@
         <v-list flat>
           <v-subheader>Processos disponíveis para acompanhamento</v-subheader>
           <v-list-item-group v-model="selectedItem" color="primary">
-            <v-list-item v-for="(proccess, i) in proccesses.id" :key="i">
+            <v-list-item v-for="(proccess, i) in proccesses.length" :key="i">
               <v-list-item-content @click="windowSelector(proccess)">
                 <v-list-item-title
                   >Processo de n°{{ proccess }}</v-list-item-title
@@ -32,7 +32,7 @@
             <v-col cols="8">
               <v-timeline align-top reverse>
                 <v-timeline-item
-                  v-for="(phase, i) in proccesses.phase"
+                  v-for="(phase, i) in proccess.phase"
                   :key="i"
                   dot
                 >
@@ -59,6 +59,7 @@ export default {
   components: {},
   data: () => ({
     proccesses: [],
+    proccess:{},
     window: null,
     selectedItem: 1,
   }),
@@ -67,31 +68,31 @@ export default {
   },
   methods: {
     async getProccess() {
+      console.log(this.currentUser.id)
       try {
         const response = await this.$axios.get(
-          "proccesses/", {params: {user_id: this.currentUser.id}}
+          "proccesses/", this.currentUser.id
         );
-        this.proccesses = response.data;
-        // if (response.data.phase) {
-        //   this.proccesses.phases = response.data.phase.map((el) => {
-        //     return {
-        //       id: el.id,
-        //       description: el.description,
-        //       proccess_id: el.proccess_id,
-        //       created_at: this.formatDateTime(el.created_at),
-        //       updated_at: this.formatDateTime(el.updated_at),
-        //     };
-        //   });
-        // }
-        console.log(response.data);
+        this.proccesses =  response.data;
+         console.log('INDEX ::::::', this.proccesses);
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    async showProccess() {
+      try {
+        const response = await this.$axios.get(
+          "proccesses/" + this.window
+        );
+        this.proccess = response.data;
+        console.log('SHOW ::::::', this.proccess);
       } catch (error) {
         console.log(error);
       }
     },
     windowSelector(id) {
-      console.log(id);
       this.window = id;
-      console.log(this.window);
+      this.showProccess()
     },
     formatDateTime(dataTime) {
       const day = dataTime.slice(8, 10);

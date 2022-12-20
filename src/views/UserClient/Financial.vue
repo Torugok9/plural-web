@@ -97,7 +97,9 @@ import { mapState } from "vuex";
 
 export default {
   components: {},
-  data: () => ({}),
+  data: () => ({
+    
+  }),
   mounted() {},
   methods: {},
   computed: {
